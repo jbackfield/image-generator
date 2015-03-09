@@ -19,13 +19,16 @@ public class ImageGenerator {
     }
 
     public static void main(String[] args) {
+        if(args.length != 1) {
+            throw new IllegalArgumentException("Expected email as argument");
+        }
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/application-context.xml");
 
         ImageGenerator imageGenerator = (ImageGenerator) applicationContext.getBean("imageGenerator");
 
         File file = new File("test.png");
         try {
-            ImageIO.write(imageGenerator.generateImageForString("jbackfield@gmail.com"), "png", file);
+            ImageIO.write(imageGenerator.generateImageForString(args[0]), "png", file);
         } catch(Exception e) {
             throw new RuntimeException(e);
         }
