@@ -9,11 +9,17 @@
 
     <context:annotation-config />
 
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:config.properties" />
+    </bean>
+
     <bean id="imageGenerator" class="com.backfield.imagegenerator.ImageGenerator" />
 
     <bean id="imageDrawFactory" class="com.backfield.imagegenerator.ImageDrawFactory">
-        <constructor-arg name="squareSize" value="20" />
-        <constructor-arg name="numberOfSquares" value="10" />
+        <constructor-arg name="squareSize" value="${square.size}" />
+        <constructor-arg name="numberOfSquares" value="${square.count}" />
     </bean>
+
+    <bean id="imageDraw" factory-bean="imageDrawFactory" factory-method="create" />
 
 </beans>

@@ -1,5 +1,6 @@
 package com.backfield.imagegenerator;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -10,12 +11,20 @@ import java.io.File;
 
 public class ImageGenerator {
 
-    @Resource(name = "imageDrawFactory")
-    ImageDrawFactory imageDrawFactory;
+    @Resource(name = "imageDraw")
+    ImageDraw imageDraw;
 
-    public BufferedImage generateImageForString(String str) {
-        ImageDraw imageDraw = imageDrawFactory.create(str.hashCode());
-        return imageDraw.draw();
+    @Value("${file.name}")
+    String fileName;
+
+    public void generateImageForString(String str) {
+        imageDraw.setSeed(str.hashCode());
+        File file = new File(fileName);
+        try {
+            ImageIO.write(imageDraw.draw(), "png", file);
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void main(String[] args) {
@@ -26,12 +35,7 @@ public class ImageGenerator {
 
         ImageGenerator imageGenerator = (ImageGenerator) applicationContext.getBean("imageGenerator");
 
-        File file = new File("test.png");
-        try {
-            ImageIO.write(imageGenerator.generateImageForString(args[0]), "png", file);
-        } catch(Exception e) {
-            throw new RuntimeException(e);
-        }
+        imageGenerator.generateImageForString(args[0]);
     }
 
 }
