@@ -14,12 +14,9 @@ public class ImageGenerator {
     @Resource(name = "imageDraw")
     ImageDraw imageDraw;
 
-    @Value("${file.name}")
-    String fileName;
-
     public void generateImageForString(String str) {
         imageDraw.setSeed(str.hashCode());
-        File file = new File(fileName);
+        File file = new File("test.png");
         try {
             ImageIO.write(imageDraw.draw(), "png", file);
         } catch(Exception e) {
