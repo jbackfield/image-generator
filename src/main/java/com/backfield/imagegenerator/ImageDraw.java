@@ -33,45 +33,15 @@ public class ImageDraw {
         this.random.setSeed(hash);
     }
 
-    private void drawLowerLeftTriangle(BufferedImage image, int color, int x, int y) {
-        for (int squareX = 0; squareX < ImageDraw.squareSize; squareX++) {
-            for (int squareY = squareX; squareY < ImageDraw.squareSize; squareY++) {
-                image.setRGB(x * ImageDraw.squareSize + squareX, y * ImageDraw.squareSize + squareY, color);
-            }
-        }
-    }
+    private DrawLowerLeftTriangle drawLowerLeftTriangle = new DrawLowerLeftTriangle();
 
-    private void drawLowerRightTriangle(BufferedImage image, int color, int x, int y) {
-        for (int squareX = 0; squareX < ImageDraw.squareSize; squareX++) {
-            for (int squareY = (ImageDraw.squareSize - squareX); squareY < ImageDraw.squareSize; squareY++) {
-                image.setRGB(x * ImageDraw.squareSize + squareX, y * ImageDraw.squareSize + squareY, color);
-            }
-        }
-    }
+    private DrawLowerRightTriangle drawLowerRightTriangle = new DrawLowerRightTriangle();
 
-    private void drawUpperLeftTriangle(BufferedImage image, int color, int x, int y) {
-        for (int squareX = 0; squareX < ImageDraw.squareSize; squareX++) {
-            for (int squareY = 0; squareY < ImageDraw.squareSize; squareY++) {
-                image.setRGB(x * ImageDraw.squareSize + squareX, y * ImageDraw.squareSize + squareY, color);
-            }
-        }
-    }
+    private DrawUpperLeftTriangle drawUpperLeftTriangle = new DrawUpperLeftTriangle();
 
-    private void drawUpperRightTriangle(BufferedImage image, int color, int x, int y) {
-        for (int squareX = 0; squareX < ImageDraw.squareSize; squareX++) {
-            for (int squareY = 0; squareY < squareX; squareY++) {
-                image.setRGB(x * ImageDraw.squareSize + squareX, y * ImageDraw.squareSize + squareY, color);
-            }
-        }
-    }
+    private DrawUpperRightTriangle drawUpperRightTriangle = new DrawUpperRightTriangle();
 
-    private void drawSquare(BufferedImage image, int color, int x, int y) {
-        for(int squareX = 0; squareX < ImageDraw.squareSize; squareX++) {
-            for(int squareY = 0; squareY < ImageDraw.squareSize; squareY++) {
-                image.setRGB(x * ImageDraw.squareSize + squareX, y * ImageDraw.squareSize + squareY, color);
-            }
-        }
-    }
+    private DrawSquare drawSquare = new DrawSquare();
 
     private int nextColor() {
         float rand = this.random.nextFloat();
@@ -96,15 +66,15 @@ public class ImageDraw {
             for(this.y = 0; this.y < this.numberOfSquares; this.y++) {
                 float rand = this.random.nextFloat();
                 if(rand < 0.2) {
-                    this.drawSquare(this.image, nextColor(), x, y);
+                    this.drawSquare.draw(this.image, nextColor(), x, y);
                 } else if(rand < 0.4) {
-                    this.drawUpperRightTriangle(this.image, nextColor(), x, y);
+                    this.drawUpperRightTriangle.draw(this.image, nextColor(), x, y);
                 } else if(rand < 0.6) {
-                    this.drawUpperLeftTriangle(this.image, nextColor(), x, y);
+                    this.drawUpperLeftTriangle.draw(this.image, nextColor(), x, y);
                 } else if(rand < 0.8) {
-                    this.drawLowerRightTriangle(this.image, nextColor(), x, y);
+                    this.drawLowerRightTriangle.draw(this.image, nextColor(), x, y);
                 } else {
-                    this.drawLowerLeftTriangle(this.image, nextColor(), x, y);
+                    this.drawLowerLeftTriangle.draw(this.image, nextColor(), x, y);
                 }
             }
         }
