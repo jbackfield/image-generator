@@ -26,7 +26,11 @@ public class ImageDraw {
     public ImageDraw(int squareSize, int numberOfSquares) {
         this.squareSize = squareSize;
         this.numberOfSquares = numberOfSquares;
-        this.image = new BufferedImage(this.squareSize * this.numberOfSquares, this.squareSize * this.numberOfSquares, BufferedImage.TYPE_INT_RGB);
+        this.image = new BufferedImage(
+                this.squareSize * this.numberOfSquares,
+                this.squareSize * this.numberOfSquares,
+                BufferedImage.TYPE_INT_RGB
+        );
     }
 
     public void setSeed(int hash) {

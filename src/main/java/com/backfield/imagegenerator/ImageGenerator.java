@@ -6,6 +6,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import java.io.File;
+import java.util.Arrays;
+import java.util.function.Consumer;
 
 public class ImageGenerator {
 
@@ -14,7 +16,7 @@ public class ImageGenerator {
 
     public void generateImageForString(String str) {
         imageDraw.setSeed(str.hashCode());
-        File file = new File("test.png");
+        File file = new File(str + ".png");
         try {
             ImageIO.write(imageDraw.draw(), "png", file);
         } catch(Exception e) {
@@ -23,8 +25,8 @@ public class ImageGenerator {
     }
 
     public static void main(String[] args) {
-        if(args.length != 1) {
-            throw new IllegalArgumentException("Expected email as argument");
+        if(args.length != 0) {
+            throw new IllegalArgumentException("Expected one argument");
         }
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/application-context.xml");
 
