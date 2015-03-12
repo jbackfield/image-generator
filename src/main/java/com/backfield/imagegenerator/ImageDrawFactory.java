@@ -10,8 +10,5 @@ public class ImageDrawFactory {
         this.numberOfSquares = numberOfSquares;
     }
 
-    public ImageDraw create() {
-        return new ImageDraw(this.squareSize, this.numberOfSquares);
-    }
 
 }

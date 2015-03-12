@@ -1,128 +1,66 @@
 package com.backfield.imagegenerator;
 
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class ImageDraw {
 
-    private BufferedImage image;
+    private final static int baseColor = 0x313A75;
 
-    private int squareSize;
-    private int numberOfSquares;
+    private final static int[] baseColorPalette = {0x182157, 0x080F3A, 0x525B92, 0x7C93AF};
 
-    private int x = 0;
-    private int y = 0;
+    private final static int compliment = 0xAA8A39;
 
-    private Random random = new Random();
+    private final static int[] complimentPalette = {0xFFE7AA, 0xD4B66A, 0x806115, 0x553D00};
 
-    private final int baseColor = 0x313A75;
+    public final static List<Drawable> drawables = Arrays.asList(
+        new DrawSquare()::drawIt,
+        DrawUpperRightTriangle::draw,
+        DrawUpperLeftTriangle::draw,
+        DrawLowerRightTriangle::draw,
+        DrawLowerLeftTriangle::draw
+    );
 
-    private final int[] baseColorPalette = {0x182157, 0x080F3A, 0x525B92, 0x7C93AF};
+    private static int nextColor(float rand) {
+        if(rand < 0.1) {
+            if(rand < 0.6) {
+                return compliment;
+            } else {
+                return complimentPalette[(int)(rand * 4)];
+            }
+        } else {
+            if (rand < 0.6) {
+                return baseColor;
+            } else {
+                return baseColorPalette[(int)(rand * 4)];
+            }
+        }
+    }
 
-    private final int compliment = 0xAA8A39;
-
-    private final int[] complimentPalette = {0xFFE7AA, 0xD4B66A, 0x806115, 0x553D00};
-
-    public ImageDraw(int squareSize, int numberOfSquares) {
-        this.squareSize = squareSize;
-        this.numberOfSquares = numberOfSquares;
-        this.image = new BufferedImage(
-                this.squareSize * this.numberOfSquares,
-                this.squareSize * this.numberOfSquares,
+    public static BufferedImage draw(Random random, int squareSize, int numberOfSquares) {
+        BufferedImage image = new BufferedImage(
+                squareSize * numberOfSquares,
+                squareSize * numberOfSquares,
                 BufferedImage.TYPE_INT_RGB
         );
-    }
-
-    public void setSeed(int hash) {
-        this.random.setSeed(hash);
-    }
-
-    private void drawLowerLeftTriangle() {
-        int color = this.nextColor();
-        for (int squareX = 0; squareX < this.squareSize; squareX++) {
-            for (int squareY = squareX; squareY < this.squareSize; squareY++) {
-                this.image.setRGB(this.x * this.squareSize + squareX, this.y * this.squareSize + squareY, color);
+        for(int x = 0; x < numberOfSquares; x++) {
+            for(int y = 0; y < numberOfSquares; y++) {
+                ImageDraw.drawables.get(
+                        random.nextInt(
+                                ImageDraw.drawables.size()
+                        )
+                ).draw(
+                        image,
+                        ImageDraw.nextColor(random.nextFloat()),
+                        x,
+                        y,
+                        squareSize
+                );
             }
         }
-    }
-
-    private void drawLowerRightTriangle() {
-        int color = this.nextColor();
-        for (int squareX = 0; squareX < this.squareSize; squareX++) {
-            for (int squareY = (this.squareSize - squareX); squareY < this.squareSize; squareY++) {
-                this.image.setRGB(this.x * this.squareSize + squareX, this.y * this.squareSize + squareY, color);
-            }
-        }
-    }
-
-    private void drawUpperLeftTriangle() {
-        int color = this.nextColor();
-        for (int squareX = 0; squareX < this.squareSize; squareX++) {
-            for (int squareY = 0; squareY < this.squareSize; squareY++) {
-                this.image.setRGB(this.x * this.squareSize + squareX, this.y * this.squareSize + squareY, color);
-            }
-        }
-    }
-
-    private void drawUpperRightTriangle() {
-        int color = this.nextColor();
-        for (int squareX = 0; squareX < this.squareSize; squareX++) {
-            for (int squareY = 0; squareY < squareX; squareY++) {
-                this.image.setRGB(this.x * this.squareSize + squareX, this.y * this.squareSize + squareY, color);
-            }
-        }
-    }
-
-    private void drawSquare() {
-        int color = this.nextColor();
-        for(int squareX = 0; squareX < this.squareSize; squareX++) {
-            for(int squareY = 0; squareY < this.squareSize; squareY++) {
-                this.image.setRGB(this.x * this.squareSize + squareX, this.y * this.squareSize + squareY, color);
-            }
-        }
-    }
-
-    private int nextColor() {
-        float rand = this.random.nextFloat();
-        int base;
-        int[] palette;
-        if(rand < 0.1) {
-            base = compliment;
-            palette = complimentPalette;
-        } else {
-            base = baseColor;
-            palette = baseColorPalette;
-        }
-        if(rand < 0.6) {
-            return base;
-        } else {
-            return palette[(int)(rand * 4)];
-        }
-    }
-
-    public BufferedImage draw() {
-        for(this.x = 0; this.x < this.numberOfSquares; this.x++) {
-            for(this.y = 0; this.y < this.numberOfSquares; this.y++) {
-                switch(this.random.nextInt(5)) {
-                    case 0:
-                        this.drawSquare();
-                        break;
-                    case 1:
-                        this.drawUpperRightTriangle();
-                        break;
-                    case 2:
-                        this.drawUpperLeftTriangle();
-                        break;
-                    case 3:
-                        this.drawLowerRightTriangle();
-                        break;
-                    case 4:
-                        this.drawLowerLeftTriangle();
-                        break;
-                }
-            }
-        }
-        return this.image;
+        return image;
     }
 
 }
