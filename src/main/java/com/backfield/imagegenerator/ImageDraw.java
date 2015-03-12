@@ -99,17 +99,22 @@ public class ImageDraw {
     public BufferedImage draw() {
         for(this.x = 0; this.x < this.numberOfSquares; this.x++) {
             for(this.y = 0; this.y < this.numberOfSquares; this.y++) {
-                float rand = this.random.nextFloat();
-                if(rand < 0.2) {
-                    this.drawSquare();
-                } else if(rand < 0.4) {
-                    this.drawUpperRightTriangle();
-                } else if(rand < 0.6) {
-                    this.drawUpperLeftTriangle();
-                } else if(rand < 0.8) {
-                    this.drawLowerRightTriangle();
-                } else {
-                    this.drawLowerLeftTriangle();
+                switch(this.random.nextInt(5)) {
+                    case 0:
+                        this.drawSquare();
+                        break;
+                    case 1:
+                        this.drawUpperRightTriangle();
+                        break;
+                    case 2:
+                        this.drawUpperLeftTriangle();
+                        break;
+                    case 3:
+                        this.drawLowerRightTriangle();
+                        break;
+                    case 4:
+                        this.drawLowerLeftTriangle();
+                        break;
                 }
             }
         }
