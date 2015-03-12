@@ -6,8 +6,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import java.io.File;
-import java.util.Arrays;
-import java.util.function.Consumer;
 
 public class ImageGenerator {
 
@@ -25,7 +23,7 @@ public class ImageGenerator {
     }
 
     public static void main(String[] args) {
-        if(args.length != 0) {
+        if(args.length != 1) {
             throw new IllegalArgumentException("Expected one argument");
         }
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/application-context.xml");
