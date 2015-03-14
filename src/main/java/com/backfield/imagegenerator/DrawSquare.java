@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
  */
 public class DrawSquare {
 
-    public void drawIt(BufferedImage image, int color, int x, int y, int squareSize) {
+    public static void draw(BufferedImage image, int color, int x, int y, int squareSize) {
         for(int squareX = 0; squareX < squareSize; squareX++) {
             for(int squareY = 0; squareY < squareSize; squareY++) {
                 image.setRGB(

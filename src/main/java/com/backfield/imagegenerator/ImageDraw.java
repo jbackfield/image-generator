@@ -16,11 +16,36 @@ public class ImageDraw {
     private final static int[] complimentPalette = {0xFFE7AA, 0xD4B66A, 0x806115, 0x553D00};
 
     public final static List<Drawable> drawables = Arrays.asList(
-        new DrawSquare()::drawIt,
-        DrawUpperRightTriangle::draw,
-        DrawUpperLeftTriangle::draw,
-        DrawLowerRightTriangle::draw,
-        DrawLowerLeftTriangle::draw
+            new Drawable() {
+                @Override
+                public void draw(BufferedImage image, int color, int x, int y, int squareSize) {
+                    DrawSquare.draw(image, color, x, y, squareSize);
+                }
+            },
+            new Drawable() {
+                @Override
+                public void draw(BufferedImage image, int color, int x, int y, int squareSize) {
+                    DrawUpperRightTriangle.draw(image, color, x, y, squareSize);
+                }
+            },
+            new Drawable() {
+                @Override
+                public void draw(BufferedImage image, int color, int x, int y, int squareSize) {
+                    DrawUpperLeftTriangle.draw(image, color, x, y, squareSize);
+                }
+            },
+            new Drawable() {
+                @Override
+                public void draw(BufferedImage image, int color, int x, int y, int squareSize) {
+                    DrawLowerRightTriangle.draw(image, color, x, y, squareSize);
+                }
+            },
+            new Drawable() {
+                @Override
+                public void draw(BufferedImage image, int color, int x, int y, int squareSize) {
+                    DrawLowerLeftTriangle.draw(image, color, x, y, squareSize);
+                }
+            }
     );
 
     private static int nextColor(float rand) {
